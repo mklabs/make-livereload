@@ -1,0 +1,24 @@
+{
+  "name": "make-livereload",
+  "description": "Livereload target for make",
+  "version": "0.1.0",
+  "homepage": "https://github.com/mklabs/make-livereload",
+  "bugs": "https://github.com/mklabs/make-livereload/issues",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mklabs/make-livereload.git"
+  },
+  "bin": {
+    "tiny-lr": "./bin/tiny-lr"
+  },
+  "dependencies": {
+    "commander": "~2.3.0",
+    "debug": "~2.0.0",
+    "tiny-lr": "~0.1.1"
+  },
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ]
+}
