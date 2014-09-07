@@ -1,7 +1,7 @@
 
 # make-livereload
 
-  Livereload target for Make with sane defaults.
+Livereload target for Make
 
 
 ## Installation
