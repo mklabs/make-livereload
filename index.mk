@@ -18,7 +18,7 @@ reload: tiny-lr.pid
 tiny-lr.pid: $(LIVERELOAD_SRC)
 	@echo "File(s) changed: $?"
 	@touch $@
-	curl http://localhost:35729/changed?files=$(shell node -pe '"$?".split(" ").join(",")')
+	curl --ipv4 http://localhost:35729/changed?files=$(shell node -pe '"$?".split(" ").join(",")')
 
 livereload-start:
 	@echo ... Starting server, running in background ...
