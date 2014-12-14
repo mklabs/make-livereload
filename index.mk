@@ -29,6 +29,6 @@ livereload-start:
 livereload: livereload-start
 
 livereload-stop:
-	curl http://localhost:35729/kill
+	curl --ipv4 http://localhost:35729/kill
 
 .PHONY: livereload livereload-start livereload-stop reload
