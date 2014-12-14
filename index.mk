@@ -11,8 +11,7 @@
 LIVERELOAD_DIR ?= ./
 LIVERELOAD_SRC ?= $(shell find $(LIVERELOAD_DIR) -name '*.css' -o -name '*.js')
 DEBUG ?= tinylr:cli
-DIR ?= $(dir $(lastword $(MAKEFILE_LIST)))
-TINYLR := $(DIR)/node_modules/.bin/tiny-lr
+TINYLR := $(PWD)/node_modules/.bin/tiny-lr
 
 reload: tiny-lr.pid
 tiny-lr.pid: $(LIVERELOAD_SRC)
@@ -29,6 +28,6 @@ livereload-start:
 livereload: livereload-start
 
 livereload-stop:
-	curl http://localhost:35729/kill
+	curl --ipv4 http://localhost:35729/kill
 
 .PHONY: livereload livereload-start livereload-stop reload
