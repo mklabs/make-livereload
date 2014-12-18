@@ -49,23 +49,27 @@ process.on('SIGINT', function() {
   return process.exit(0);
 });
 
+var startServer = function() {
+  var srv = new Server(opts);
 
-var srv = new Server(opts);
-
-srv.on('close', function() {
-  process.nextTick(function() {
-    process.exit();
+  srv.on('close', function() {
+    process.nextTick(function() {
+      process.exit();
+    });
   });
-});
 
-srv.listen(opts.port, function(err) {
-  fs.writeFile(opts.pid, process.pid, function(err) {
-    if(err) {
-      debug('... Cannot write pid file: %s', opts.pid);
-      process.exit(1)
-    }
+  srv.listen(opts.port, function(err) {
+    fs.writeFile(opts.pid, process.pid, function(err) {
+      if(err) {
+        debug('... Cannot write pid file: %s', opts.pid);
+        process.exit(1)
+      }
 
-    debug('... Listening on %s (pid: %s) ...', opts.port, process.pid);
-    debug('... pid file: %s', opts.pid);
+      debug('... Listening on %s (pid: %s) ...', opts.port, process.pid);
+      debug('... pid file: %s', opts.pid);
+    });
   });
-});
+};
+
+startServer();
+
