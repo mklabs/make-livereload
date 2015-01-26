@@ -1,7 +1,7 @@
 {
   "name": "make-livereload",
   "description": "Livereload target for make",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/mklabs/make-livereload",
   "bugs": "https://github.com/mklabs/make-livereload/issues",
   "repository": {
