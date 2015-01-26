@@ -14,6 +14,8 @@ opts
   .version(require('../package').version)
   .option('port', '-p', 'Port to listen on (default: 35729)', Number)
   .option('pid', 'Path to the generated PID file (default: ./tiny-lr.pid)', String)
+  .option('--cert <path>', 'Path to the TLS certificate file (default: ./cert.pem)', String)
+  .option('--key <path>', 'Path to the TLS key file (default: ./key.pem)', String)
   .parse(process.argv);
 
 opts.port = opts.port || 35729;
@@ -49,23 +51,45 @@ process.on('SIGINT', function() {
   return process.exit(0);
 });
 
+var startServer = function() {
+  var srv = new Server(opts);
 
-var srv = new Server(opts);
-
-srv.on('close', function() {
-  process.nextTick(function() {
-    process.exit();
+  srv.on('close', function() {
+    process.nextTick(function() {
+      process.exit();
+    });
   });
-});
 
-srv.listen(opts.port, function(err) {
-  fs.writeFile(opts.pid, process.pid, function(err) {
-    if(err) {
-      debug('... Cannot write pid file: %s', opts.pid);
+  srv.listen(opts.port, function(err) {
+    fs.writeFile(opts.pid, process.pid, function(err) {
+      if(err) {
+        debug('... Cannot write pid file: %s', opts.pid);
+        process.exit(1)
+      }
+
+      debug('... Listening on %s (pid: %s) ...', opts.port, process.pid);
+      debug('... pid file: %s', opts.pid);
+    });
+  });
+};
+
+if (opts.key && opts.cert) {
+  fs.readFile(opts.key, function(err,key) {
+    if (err) {
+      debug('Couldn\'t read key file (%s).', opts.key);
+      debug(err);
       process.exit(1)
     }
-
-    debug('... Listening on %s (pid: %s) ...', opts.port, process.pid);
-    debug('... pid file: %s', opts.pid);
+    opts.key = key;
+    fs.readFile(opts.cert, function(err,cert) {
+      if (err) {
+        debug('Couldn\'t read cert file (%s).', opts.cert);
+        process.exit(1)
+      }
+      opts.cert = cert;
+      startServer();
+    });
   });
-});
+} else {
+  startServer();
+}
