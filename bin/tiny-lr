@@ -35,12 +35,15 @@ if (module.parent) {
 process.title = 'tiny-lr';
 
 process.on('exit', function() {
-  debug('... Closing server ...');
-  fs.exists(opts.pid, function(exists) {
-    if (!exists) return;
-    debug('... Removing pid file (%s) ...', opts.pid);
+  debug('... Closing server and removing PID file ...');
+  // remove PID file and catch if unable to delete
+  // must use unlinkSync because process exit must be synchronous
+  try {
     fs.unlinkSync(opts.pid);
-  });
+  }
+  catch (e) {
+    debug('... Unable to remove PID file (%s) ...', e.message);
+  }
 });
 
 process.on('SIGTERM', function() {
