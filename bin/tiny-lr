@@ -64,13 +64,13 @@ var startServer = function() {
   });
 
   srv.listen(opts.port, function(err) {
-    fs.writeFile(opts.pid, process.pid, function(err) {
+    fs.writeFile(opts.pid, String(process.pid), function(err) {
       if(err) {
         debug('... Cannot write pid file: %s', opts.pid);
         process.exit(1)
       }
 
-      debug('... Listening on %s (pid: %s) ...', opts.port, process.pid);
+      debug('... Listening on %s (pid: %s) ...', opts.port, String(process.pid));
       debug('... pid file: %s', opts.pid);
     });
   });
